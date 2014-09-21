@@ -59,7 +59,6 @@ public class MyPainter extends Canvas {
         ((Graphics2D) g).draw(b1);
         ((Graphics2D) g).draw(b2);
         ((Graphics2D) g).draw(b3);
-        
     }
     
     @Override
