@@ -30,14 +30,14 @@ public class KG_l2 {
                 new Point(15, 15),
                 new Point(200, 15),
                 new Point(350, 200));
-        
+
         mp1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Point p0 = e.getLocationOnScreen().getLocation(), p1 = new Point(p0.x, p0.y -185),
-                        p2 = new Point(p0.x+185, p0.y-185), p3 = new Point(p0.x + 340, p0.y);
-                
-                mp1.setCubicCurvePoint(p0, p1,p2,p3);
+                Point p0 = e.getLocationOnScreen().getLocation(), p1 = new Point(p0.x, p0.y - 185),
+                        p2 = new Point(p0.x + 185, p0.y - 185), p3 = new Point(p0.x + 340, p0.y);
+
+                mp1.setCubicCurvePoint(p0, p1, p2, p3);
             }
 
             @Override
