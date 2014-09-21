@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package haulmaunt.lyan.ui;
+package ui;
 
 import haulmaunt.lyan.ui.markupexception.InvalidMarkupException;
 import haulmaunt.lyan.ui.markupexception.MissingTableModelException;
@@ -14,7 +14,6 @@ import java.awt.Font;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.String;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

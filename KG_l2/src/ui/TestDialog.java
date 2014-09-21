@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package haulmaunt.lyan.ui;
+package ui;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
