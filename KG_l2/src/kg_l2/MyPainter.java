@@ -4,25 +4,25 @@
  */
 package kg_l2;
 
-import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Rectangle2D;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Артем
  */
-public class MyPainter extends Canvas {
+public class MyPainter extends JPanel {
 
     public void setCubicCurvePoint(Point p0, Point p1, Point p2, Point p3) {
         this.p0 = p0;
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
-        paint(getGraphics());
+        paintComponent(getGraphics());
     }
     private CubicCurve2D.Double curve;
     
@@ -54,6 +54,7 @@ public class MyPainter extends Canvas {
     }
 
     private void doDrawing(Graphics g){
+        g.clearRect(0, 0, getWidth(), getHeight());
         ((Graphics2D) g).draw(curve);
         ((Graphics2D) g).draw(b0);
         ((Graphics2D) g).draw(b1);
@@ -62,7 +63,8 @@ public class MyPainter extends Canvas {
     }
     
     @Override
-    public void paint(Graphics g) {
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         doDrawing(g);
     }
 }

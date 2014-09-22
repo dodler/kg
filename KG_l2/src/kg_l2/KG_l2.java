@@ -4,10 +4,15 @@
  */
 package kg_l2;
 
+import haulmaunt.lyan.ui.markupexception.MissingMouseListenerException;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import javax.swing.JFrame;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
+import ui.MarkupLoader;
 
 /**
  *
@@ -18,8 +23,10 @@ public class KG_l2 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, MissingMouseListenerException, Exception {
 
+        MarkupLoader ml = MarkupLoader.getMarkupLoaderInstance();
+        
         JFrame mp = new JFrame();
         mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mp.setSize(640, 480);
@@ -30,7 +37,8 @@ public class KG_l2 {
                 new Point(15, 15),
                 new Point(200, 15),
                 new Point(350, 200));
-
+        mp1.setBounds(0, 0, 400, 300);
+        
         mp1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -56,7 +64,7 @@ public class KG_l2 {
             public void mouseExited(MouseEvent e) {
             }
         });
-        mp.add(mp1);
-
+        ml.loadMarkup("markup.xml", mp);
+        mp.getContentPane().add(mp1);
     }
 }
