@@ -17,6 +17,24 @@ import javax.swing.JPanel;
  */
 public class MyPainter extends JPanel {
 
+    public void setCubicCurvePoint(Point p, int n) throws WrongIndexException{
+        switch(n){
+            case 0: p0 = p; break;
+            case 1: p1 = p; break;
+            case 2: p2 = p; break;
+            case 3: p3 = p; break;
+            default: throw new WrongIndexException();
+        }
+        paintComponent(getGraphics());
+    }
+    
+    /**
+     * общий метод для обновления всех координат опорных точек кривой безье
+     * @param p0 - первая опорная точка
+     * @param p1 - вторая опорная точка
+     * @param p2 - третья опорная точка
+     * @param p3 - четвертая опорная точка
+     */
     public void setCubicCurvePoint(Point p0, Point p1, Point p2, Point p3) {
         this.p0 = p0;
         this.p1 = p1;
@@ -66,5 +84,6 @@ public class MyPainter extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         doDrawing(g);
+        validate();
     }
 }

@@ -18,4 +18,77 @@
 		label = ""
 	/>
 	
+	<text
+		name = "y1"
+		x = '550'
+		y = '30'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<text
+		name = "x2"
+		x = '500'
+		y = '70'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<text
+		name = "y2"
+		x = '550'
+		y = '70'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<text
+		name = "x3"
+		x = '500'
+		y = '110'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<text
+		name = "y3"
+		x = '550'
+		y = '110'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<text
+		name = "x4"
+		x = '500'
+		y = '150'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<text
+		name = "y4"
+		x = '550'
+		y = '150'
+		width = '30'
+		height = '15'
+		label = ""
+	/>
+	
+	<button
+		name="enterCoordsBtn"
+		x = '520'
+		y = '170'
+		width = '80'
+		height = '30'
+		label = 'Enter'
+		mouseListener = 'mouseListener'
+	/>
+	
 </frame>
