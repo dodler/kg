@@ -94,18 +94,22 @@ public class KG_l2 {
         ml = MarkupLoader.getMarkupLoaderInstance();
 
         JFrame mp = new JFrame();
-        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mp.setSize(640, 480);
-        mp.setVisible(true);
-        mp.setResizable(false);
+        
         mp1 = new MyPainter(
                 new Point(10, 200),
                 new Point(15, 15),
                 new Point(200, 15),
                 new Point(350, 200));
+        
         mp1.setBounds(0, 0, 400, 300);
         ml.mouseListeners.put("mouseListener", mouseListener);
-        ml.loadMarkup("markup.xml", mp.getContentPane());
-        mp.getContentPane().add(mp1);
+        ml.loadMarkup("markup.xml", mp);
+        mp.add(mp1);
+        
+        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mp.pack();
+        mp.setSize(640, 480);
+        mp.setVisible(true);
+        mp.setResizable(true);
     }
 }
