@@ -7,14 +7,18 @@ package ui;
 import haulmaunt.lyan.ui.markupexception.InvalidMarkupException;
 import haulmaunt.lyan.ui.markupexception.MissingTableModelException;
 import haulmaunt.lyan.ui.markupexception.MissingMouseListenerException;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -180,7 +184,7 @@ public class MarkupLoader {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc = builder.parse(markupSource);
-        initMarkup(parent, doc.getFirstChild());
+        initMarkup(parent, doc);
     }
 
     /**
@@ -215,12 +219,11 @@ public class MarkupLoader {
      * @throws Exception - что то отсутствует, надо выяснить что и заменить
      * исключение
      */
-    private void initMarkup(Component parent, Node node) throws 
-            MissingTableModelException, 
-            MissingMouseListenerException, 
+    private void initMarkup(Component parent, Node node) throws
+            MissingTableModelException,
+            MissingMouseListenerException,
             InvalidMarkupException,
-            Exception
-    {
+            Exception {
         NodeList currentComponents = node.getChildNodes();
         Component t;
         NamedNodeMap attributes;
@@ -283,66 +286,66 @@ public class MarkupLoader {
             }
 
             switch (currentComponents.item(i).getNodeName()) {
-                
+
                 case "menuBar":
-                    
+
                     /*if (!parent.getClass().equals(JFrame.class)){
-                        throw new InvalidMarkupException();
-                    }*/
-                    
+                     throw new InvalidMarkupException();
+                     }*/
+
                     if ((className.equals("JMenuBar") || className.equals("")) && !frameClasses.containsKey(className)) {
                         t = new JMenuBar();
                     } else {
                         t = (JMenuBar) labelClasses.get(className).getConstructor().newInstance();
                     }
-                    
-                    ((Container)parent).add(t);
+
+                    ((Container) parent).add(t);
                     initMarkup(t, currentComponents.item(i));
-                    ((JFrame)parent).setJMenuBar((JMenuBar)t);
-                    
+                    ((JFrame) parent).setJMenuBar((JMenuBar) t);
+
                     components.put(attributes.getNamedItem("name").getTextContent(), t);
                     break;
-                
+
                 case "menuItem":
-                    
-                    if (!parent.getClass().equals(JMenu.class)){
+
+                    if (!parent.getClass().equals(JMenu.class)) {
                         throw new InvalidMarkupException(); // произошла ошибка разметки
                         // имеется в виду что родительский элемент не jmenu
                     }
-                    
+
                     if ((className.equals("JMenuItem") || className.equals("")) && !frameClasses.containsKey(className)) {
                         t = new JMenuItem();
                     } else {
                         t = (JMenuItem) labelClasses.get(className).getConstructor().newInstance();
                     }
-                    
+
                     String mouseListenerName = "";
-                    
-                    if (attributes.getNamedItem("mouseListener") != null){
+
+                    if (attributes.getNamedItem("mouseListener") != null) {
                         mouseListenerName = attributes.getNamedItem("mouseListener").getTextContent();
                     }
-                    
-                    if (!mouseListenerName.equals("") && mouseListeners.containsKey(mouseListenerName)){
-                        ((JMenuItem)t).addMouseListener(mouseListeners.get(mouseListenerName));
-                    }else if (!mouseListenerName.equals("")){
+
+                    if (!mouseListenerName.equals("") && mouseListeners.containsKey(mouseListenerName)) {
+                        ((JMenuItem) t).addMouseListener(mouseListeners.get(mouseListenerName));
+                    } else if (!mouseListenerName.equals("")) {
                     }
 
                     if (!label.equals("")) {
                         ((JMenuItem) t).setText(label);
-                    }else{
+                    } else {
                         throw new InvalidMarkupException();
                     }
-                    
-                    ((JMenu)parent).add((JMenuItem)t);
+
+                    ((JMenu) parent).add((JMenuItem) t);
                     components.put(attributes.getNamedItem("name").getTextContent(), t);
                     break;
 
                 case "menu":
 
-                    if (!parent.getClass().equals(JMenuBar.class)){
+                    if (!parent.getClass().equals(JMenuBar.class)) {
                         throw new InvalidMarkupException(); // ошибка разметки
-                    }                    
-                    
+                    }
+
                     if ((className.equals("JMenu") || className.equals("")) && !frameClasses.containsKey(className)) {
                         t = new JMenu();
                     } else {
@@ -352,10 +355,10 @@ public class MarkupLoader {
                     if (!label.equals("")) {
                         ((JMenu) t).setText(label);
                     }
-                    
+
                     initMarkup(t, currentComponents.item(i));
-                    
-                    ((JMenuBar)parent).add(t);
+
+                    ((JMenuBar) parent).add(t);
 
                     break;
 
@@ -367,11 +370,11 @@ public class MarkupLoader {
                         t = (JLabel) labelClasses.get(className).getConstructor(String.class).newInstance(label);
                     }
                     t.setBounds(
-                            Integer.parseInt(attributes.getNamedItem("x").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("y").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("width").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("height").getTextContent()));
-                    ((Container)parent).add(t);
+                            getAttributeValue("x", attributes),
+                            getAttributeValue("y", attributes),
+                            getAttributeValue("width", attributes),
+                            getAttributeValue("height", attributes));
+                    ((Container) parent).add(t);
                     components.put(attributes.getNamedItem("name").getTextContent(), t);
                     break;
 
@@ -383,11 +386,11 @@ public class MarkupLoader {
                         t = (JTextField) labelClasses.get(className).getConstructor().newInstance();
                     }
                     t.setBounds(
-                            Integer.parseInt(attributes.getNamedItem("x").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("y").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("width").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("height").getTextContent()));
-                    ((Container)parent).add(t);
+                            getAttributeValue("x", attributes),
+                            getAttributeValue("y", attributes),
+                            getAttributeValue("width", attributes),
+                            getAttributeValue("height", attributes));
+                    ((Container) parent).add(t);
                     components.put(attributes.getNamedItem("name").getTextContent(), t);
 
                     break;
@@ -401,18 +404,28 @@ public class MarkupLoader {
                         t = (JFrame) frameClasses.get(className).getConstructor().newInstance(); // либо заданный
                     }
                     t.setBounds( // и габариты
-                            Integer.parseInt(attributes.getNamedItem("x").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("y").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("width").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("height").getTextContent()));
+                            getAttributeValue("x", attributes),
+                            getAttributeValue("y", attributes),
+                            getAttributeValue("width", attributes),
+                            getAttributeValue("height", attributes));
 
                     initMarkup((JFrame) t, currentComponents.item(i)); // элемент может содрежать дочерние элементы, поэтому запускаем рекурсивную обработку "детей"
                     boolean enable = Boolean.valueOf(attributes.getNamedItem("autoEnable").getTextContent()); // почему то никак не задействовано
                     String layout = attributes.getNamedItem("layout").getTextContent();
                     switch (layout) { // TODO добавьт другие layout
+                        case "GridLayout":
+                            ((JFrame) t).setLayout(new GridLayout());
+                            break;
+                        case "FlowLayout":
+                            ((JFrame) t).setLayout(new FlowLayout());
+                            break;
+                        case "BorderLayout":
+                            ((JFrame) t).setLayout(new BorderLayout());
+                            break;
                         default:
-                            ((JDialog) t).setLayout(null); // выбираем тип разметки
+                            ((JFrame) t).setLayout(null); // выбираем тип разметки
                     }
+                    if (enable)
                     ((JFrame) t).setVisible(enable); // можно сразу сделать окно доступным
 
                     components.put(attributes.getNamedItem("name").getTextContent(), t);
@@ -429,26 +442,26 @@ public class MarkupLoader {
                         t.addMouseListener(mouseListeners.get(mouseListenerName)); // если есть назначаем
                     }
                     t.setBounds(
-                            Integer.parseInt(attributes.getNamedItem("x").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("y").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("width").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("height").getTextContent()));
+                            getAttributeValue("x", attributes),
+                            getAttributeValue("y", attributes),
+                            getAttributeValue("width", attributes),
+                            getAttributeValue("height", attributes));
 
-                    ((Container)parent).add(t);
+                    ((Container) parent).add(t);
                     components.put(attributes.getNamedItem("name").getTextContent(), t);
-                    
-                    
+
+
                     String iconUrl;// адрес иконки
-                    if (attributes.getNamedItem("iconURL") != null) {
-                        iconUrl = attributes.getNamedItem("iconURL").getTextContent();
+                    if (attributes.getNamedItem("icon") != null) {
+                        iconUrl = attributes.getNamedItem("icon").getTextContent();
                     } else {
                         continue;
                     }
-                    
+
                     ImageIcon ii; // иконка для кнопки
                     if (!iconUrl.equals("")) {
                         ii = new ImageIcon(iconUrl);
-                    }else{
+                    } else {
                         continue;
                     }
                     ((JButton) t).setIcon(ii);
@@ -462,10 +475,10 @@ public class MarkupLoader {
                         t = (JDialog) dialogClasses.get(className).getConstructor().newInstance();
                     }
                     t.setBounds(
-                            Integer.parseInt(attributes.getNamedItem("x").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("y").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("width").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("height").getTextContent()));
+                            getAttributeValue("x", attributes),
+                            getAttributeValue("y", attributes),
+                            getAttributeValue("width", attributes),
+                            getAttributeValue("height", attributes));
 
                     initMarkup((JDialog) t, currentComponents.item(i));
                     enable = Boolean.valueOf(attributes.getNamedItem("autoEnable").getTextContent());
@@ -504,11 +517,11 @@ public class MarkupLoader {
                     }
 
                     t.setBounds(
-                            Integer.parseInt(attributes.getNamedItem("x").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("y").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("width").getTextContent()),
-                            Integer.parseInt(attributes.getNamedItem("height").getTextContent())); // координаты
-                    ((Container)parent).add(t); // добавляем в список отображения родителя
+                            getAttributeValue("x", attributes),
+                            getAttributeValue("y", attributes),
+                            getAttributeValue("width", attributes),
+                            getAttributeValue("height", attributes)); // координаты
+                    ((Container) parent).add(t); // добавляем в список отображения родителя
                     components.put(name, t); // добавляем в список объектов
 
                     break;
@@ -530,7 +543,16 @@ public class MarkupLoader {
                 }
             }
             //
-            parent.repaint();
+            if (parent != null) {
+                parent.repaint();
+            }
         }
+    }
+
+    private int getAttributeValue(String key, NamedNodeMap attr) {
+        if (attr.getNamedItem(key) == null) {
+            return 0;
+        }
+        return Integer.parseInt(attr.getNamedItem(key).getTextContent());
     }
 }

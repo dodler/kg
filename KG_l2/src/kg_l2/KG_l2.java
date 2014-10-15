@@ -43,28 +43,28 @@ public class KG_l2 {
                 p1.x = Integer.parseInt(x1);
             }
             if (!x2.equals("")) {
-                p1.x = Integer.parseInt(x2);
+                p2.x = Integer.parseInt(x2);
             }
             if (!x3.equals("")) {
-                p1.x = Integer.parseInt(x3);
+                p3.x = Integer.parseInt(x3);
             }
             if (!x4.equals("")) {
-                p1.x = Integer.parseInt(x4);
+                p4.x = Integer.parseInt(x4);
             }
 
             if (!y1.equals("")) {
                 p1.y = Integer.parseInt(y1);
             }
             if (!y2.equals("")) {
-                p1.y = Integer.parseInt(y2);
+                p2.y = Integer.parseInt(y2);
             }
             if (!y3.equals("")) {
-                p1.y = Integer.parseInt(y3);
+                p3.y = Integer.parseInt(y3);
             }
             if (!y4.equals("")) {
-                p1.y = Integer.parseInt(y4);
+                p4.y = Integer.parseInt(y4);
             }
-
+            mp1.angle = Double.parseDouble(((JTextField)ml.components.get("angle")).getText());
 
             mp1.setCubicCurvePoint(p1, p2, p3, p4);
         }
@@ -92,8 +92,6 @@ public class KG_l2 {
     public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, MissingMouseListenerException, Exception {
 
         ml = MarkupLoader.getMarkupLoaderInstance();
-
-        JFrame mp = new JFrame();
         
         mp1 = new MyPainter(
                 new Point(10, 200),
@@ -103,13 +101,13 @@ public class KG_l2 {
         
         mp1.setBounds(0, 0, 400, 300);
         ml.mouseListeners.put("mouseListener", mouseListener);
-        ml.loadMarkup("markup.xml", mp);
-        mp.add(mp1);
+        ml.loadMarkup("markup.xml", null);
         
-        mp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mp.pack();
-        mp.setSize(640, 480);
-        mp.setVisible(true);
-        mp.setResizable(true);
+        ((JFrame)ml.components.get("main")).add(mp1);
+        
+        ((JFrame)ml.components.get("main")).pack();
+        ((JFrame)ml.components.get("main")).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        
     }
 }
